@@ -24,8 +24,8 @@ import com.sapient.shopassist.R;
 
 public class ProximityActivity extends Activity implements ProximityListener {
 
-    private static final String PROXIMITY_APP_ID = "6c6fb239bd79e98f5888c1b86c9f43190f1d2685adf36b66b98849d6ab396c19";
-    private static final String PROXIMITY_APP_SECRET = "171894da4dcb4d0a6638ae93f00039ec7ae275a29840edff85e714436b6466a0";
+    private static final String PROXIMITY_APP_ID = "e2ca14f4135a384947ed454147e38d0eb51c3c47f036f3311d33854ee00c605d";
+    private static final String PROXIMITY_APP_SECRET = "4f8b636d87cade1ef245fdffa0fea8222a10666287af35aa69bb2f0039210a54";
 
     private static final String PROXIMITY_SERVICE_ENABLED_KEY = "proximity.service.enabled";
     private static final String TAG = ProximityActivity.class.getSimpleName();
