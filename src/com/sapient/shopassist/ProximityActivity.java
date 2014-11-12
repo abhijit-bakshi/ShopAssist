@@ -1,4 +1,3 @@
-
 package com.sapient.shopassist;
 
 import android.app.Activity;
