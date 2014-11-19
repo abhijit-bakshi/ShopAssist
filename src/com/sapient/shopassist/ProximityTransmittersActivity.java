@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 
 public class ProximityTransmittersActivity extends ListActivity {
 
-    private VisitManagerHandler manager;
+    //private VisitManagerHandler manager;
     private TransmitterListAdapter adapter;
 
     @Override
@@ -60,14 +60,15 @@ public class ProximityTransmittersActivity extends ListActivity {
 
         setProgressBarVisibility(true);
      
-        if(manager == null){
+   /*     if(manager == null){
             manager = new VisitManagerHandler();
             manager.init(this);
             adapter = new TransmitterListAdapter(this, this, manager);
             setListAdapter(adapter);
             manager.startScanning();
-        }
 
+        }
+     */
         ImageButton imageButtonRefresh = (ImageButton) findViewById(R.id.imageButton_refresh);
 
         imageButtonRefresh.setOnClickListener(new View.OnClickListener() {

@@ -14,8 +14,6 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.gimbal.logging.GimbalLogConfig;
-import com.gimbal.logging.GimbalLogLevel;
 import com.gimbal.proximity.Proximity;
 import com.gimbal.proximity.ProximityError;
 import com.gimbal.proximity.ProximityListener;
@@ -23,8 +21,8 @@ import com.sapient.shopassist.R;
 
 public class ProximityActivity extends Activity implements ProximityListener {
 
-    private static final String PROXIMITY_APP_ID = "e2ca14f4135a384947ed454147e38d0eb51c3c47f036f3311d33854ee00c605d";
-    private static final String PROXIMITY_APP_SECRET = "4f8b636d87cade1ef245fdffa0fea8222a10666287af35aa69bb2f0039210a54";
+    //private static final String PROXIMITY_APP_ID = "e2ca14f4135a384947ed454147e38d0eb51c3c47f036f3311d33854ee00c605d";
+    //private static final String PROXIMITY_APP_SECRET = "4f8b636d87cade1ef245fdffa0fea8222a10666287af35aa69bb2f0039210a54";
 
     private static final String PROXIMITY_SERVICE_ENABLED_KEY = "proximity.service.enabled";
     private static final String TAG = ProximityActivity.class.getSimpleName();
@@ -48,7 +46,9 @@ public class ProximityActivity extends Activity implements ProximityListener {
         rootView = view.getRootView();
         rootView.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
 
-        initializeProximity();
+        VisitManagerHandler.initializeProximity(this, getApplication());
+        
+        //initializeProximity();
 
         String proximityServiceEnabled = getUserPreference(PROXIMITY_SERVICE_ENABLED_KEY);
         if (proximityServiceEnabled != null && Boolean.valueOf(proximityServiceEnabled)) {
@@ -90,7 +90,7 @@ public class ProximityActivity extends Activity implements ProximityListener {
         return false;
     }
 
-    private void initializeProximity() {
+   /* private void initializeProximity() {
         Log.d(TAG, "initializeProximity");
 
         GimbalLogConfig.setLogLevel(GimbalLogLevel.INFO);
@@ -98,11 +98,15 @@ public class ProximityActivity extends Activity implements ProximityListener {
 
         Proximity.initialize(this, PROXIMITY_APP_ID, PROXIMITY_APP_SECRET);
         Proximity.optimizeWithApplicationLifecycle(getApplication());
-    }
+    }*/
 
     private void startProximityService() {
         Log.d(ProximityActivity.class.getSimpleName(), "startSession");
         Proximity.startService(this);
+        
+        Intent intent = new Intent(getApplicationContext(), StoreNotificationService.class);
+        startService(intent);
+        
     }
 
     @Override

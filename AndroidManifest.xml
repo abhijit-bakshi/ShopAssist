@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sapient.shopassist"
     android:versionCode="1"
@@ -7,10 +8,10 @@
         android:minSdkVersion="16"
         android:targetSdkVersion="21" />
 
-<uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
@@ -23,15 +24,13 @@
         android:icon="@drawable/proximitybackground2x"
         android:label="@string/app_name"
         android:theme="@style/AppBaseTheme" >
-        
         <activity
-            android:name="com.sapient.shopassist.ProximityActivity"
+            android:name=".ProximityActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
-            android:theme="@style/AppBaseTheme" 
-            android:launchMode="singleTask" 
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
-			android:configChanges="keyboardHidden|orientation|screenSize" >
-            
+            android:theme="@style/AppBaseTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,22 +45,20 @@
                 <data android:scheme="proximityandroidreferenceapp" />
             </intent-filter>
         </activity>
-        
         <activity
-            android:name="com.sapient.shopassist.ProximityTransmittersActivity"
+            android:name=".ProximityTransmittersActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
-            android:theme="@style/AppBaseTheme"  
             android:screenOrientation="portrait"
-			android:configChanges="keyboardHidden|orientation|screenSize" >
+            android:theme="@style/AppBaseTheme" >
             <intent-filter>
                 <action android:name="com.sapient.shopassist.ProximityTransmittersActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
         <activity
-            android:name="com.sapient.shopassist.ProximityAddTransmitter"
+            android:name=".ProximityAddTransmitter"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.sapient.shopassist.ProximityAddTransmitter" />
@@ -69,21 +66,25 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.sapient.shopassist.ProximityBluetoothSettingsActivity"
+            android:name=".ProximityBluetoothSettingsActivity"
             android:label="@string/title_activity_proximity_bluetooth_settings" >
         </activity>
-        
+
         <!-- Third party app integration with Gimbal : START -->
         <service
-            android:name="com.gimbal.service.ProximityService" android:exported="false">
+            android:name="com.gimbal.service.ProximityService"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.sapient.shopassist" />
             </intent-filter>
         </service>
         <!-- Third party app integration with Gimbal : END -->
-        
+        <service
+            android:name=".StoreNotificationService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
