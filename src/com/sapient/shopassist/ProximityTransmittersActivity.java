@@ -5,12 +5,14 @@ import java.util.LinkedHashMap;
 import com.sapient.shopassist.R;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class ProximityTransmittersActivity extends ListActivity {
 
@@ -22,8 +24,18 @@ public class ProximityTransmittersActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         Log.d(ProximityTransmittersActivity.class.getSimpleName(), "onCreate()");
         setContentView(R.layout.transmitter_list_layout);
+    
+       
     }
 
+    private void showToastMessage(final String message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.proximitytransmitters, menu);
@@ -56,9 +68,14 @@ public class ProximityTransmittersActivity extends ListActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(ProximityTransmittersActivity.class.getSimpleName(), "onResume()");
+        Log.i(ProximityTransmittersActivity.class.getSimpleName(), "onResume()");
 
         setProgressBarVisibility(true);
+        
+        Intent intent = getIntent();        
+        Bundle bundle = intent.getExtras(); 
+        if(bundle != null)
+        	showToastMessage(bundle.getInt("id") + ": " + bundle.getString("message"));
      
    /*     if(manager == null){
             manager = new VisitManagerHandler();

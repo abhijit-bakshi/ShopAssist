@@ -24,16 +24,18 @@ public class VisitManagerHandler implements VisitListener {
     private static final String PROXIMITY_APP_ID = "e2ca14f4135a384947ed454147e38d0eb51c3c47f036f3311d33854ee00c605d";
     private static final String PROXIMITY_APP_SECRET = "4f8b636d87cade1ef245fdffa0fea8222a10666287af35aa69bb2f0039210a54";
 
-
+    private Boolean sb1Notified = false;
+    private Boolean sb2Notified = false;
+    
     private static final String TAG = "VisitManagerHandler";
 
     private final LinkedHashMap<String, TransmitterAttributes> transmitters = new LinkedHashMap<String, TransmitterAttributes>();
     private final VisitManager visitManager = ProximityFactory.getInstance().createVisitManager();
-    private Context activity;
+    private Context context;
     private NotificationManager mNotificationManager;
     
-    public void init(Context activity) {
-        this.activity = activity;
+    public void init(Context ctxt) {
+        this.context = ctxt;
     }
 
     public void stopScanning() {
@@ -63,10 +65,18 @@ public class VisitManagerHandler implements VisitListener {
     	String msg = "I received a sighting! " + visit.getTransmitter().getName() + "and RSSI is:" + rssi;
         Log.d(TAG, msg);
         
-        if(visit.getTransmitter().getName().equalsIgnoreCase("SB1")  && rssi > -80)
+        if(visit.getTransmitter().getName().equalsIgnoreCase("SB1")  && rssi > -70 && !sb1Notified) {
         sendNotification(msg,10);
-        else if(visit.getTransmitter().getName().equalsIgnoreCase("SB2") && rssi > -80)
         sendNotification(msg,11);
+        sendNotification(msg,12);
+        sb1Notified = true;
+        }
+        if(visit.getTransmitter().getName().equalsIgnoreCase("SB2") && rssi > -70 && !sb2Notified){
+        sendNotification(msg,20);
+        sendNotification(msg,21);
+        sendNotification(msg,22);
+        sb2Notified = true;
+        }
         
        String name = visit.getTransmitter().getName();
        TransmitterAttributes attributes = new TransmitterAttributes();
@@ -102,13 +112,18 @@ public class VisitManagerHandler implements VisitListener {
     private void sendNotification(String msg, Integer notificationId){
     	    
         mNotificationManager = (NotificationManager)
-        		activity.getSystemService(Context.NOTIFICATION_SERVICE);
+        		context.getSystemService(Context.NOTIFICATION_SERVICE);
         
-        PendingIntent contentIntent = PendingIntent.getActivity(activity, 0,
-                new Intent(activity, ProximityTransmittersActivity.class), 0);
+        Intent notificationIntent = new Intent(context,ProximityTransmittersActivity.class);
+        notificationIntent.putExtra("id",notificationId);        
+        notificationIntent.putExtra("message",msg);
+        notificationIntent.setAction(Intent.ACTION_SEND);
+        
+        PendingIntent contentIntent = PendingIntent.getActivity(context, notificationId,
+        		notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         
         Notification.Builder mBuilder =
-                new Notification.Builder(activity)
+                new Notification.Builder(context)
         .setSmallIcon(R.drawable.proximitylogo)
         .setContentTitle("Offer!")
         .setStyle(new Notification.BigTextStyle()
