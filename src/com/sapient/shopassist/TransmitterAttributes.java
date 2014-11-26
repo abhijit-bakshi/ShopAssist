@@ -5,6 +5,8 @@ public class TransmitterAttributes {
 
     private String identifier;
     private String name;
+    private String offerText;
+    private String offerTitle;
     private String ownerId;
     private String iconUrl;
     private Integer battery;
@@ -28,6 +30,22 @@ public class TransmitterAttributes {
         this.name = name;
     }
 
+    public String getOfferText() {
+        return offerText;
+    }
+
+    public void setOfferText(String text) {
+        this.offerText = text;
+    }
+    
+    public String getOfferTitle() {
+        return offerTitle;
+    }
+
+    public void setOfferTitle(String text) {
+        this.offerTitle = text;
+    }
+    
     public String getOwnerId() {
         return ownerId;
     }

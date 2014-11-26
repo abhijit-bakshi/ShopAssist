@@ -39,8 +39,8 @@
     <string name="title_activity_proximity_bluetooth_settings">Bluetooth Settings</string>
     <string name="bluetooth_scanning">Bluetooth Scanning</string>
     <string name="toggle_bluetooth_scan">Toggle Bluetooth Scan</string>
-    <string name="enable_proximity_switch">Proximity</string>
-    <string name="enable_proximity_statement_part1">Enable proximity services</string>
-    <string name="enable_proximity_statement_part2">to use this app</string>
+    <string name="enable_proximity_switch"></string>
+    <string name="enable_proximity_statement_part1">Slide the button to opt in for</string>
+    <string name="enable_proximity_statement_part2">Push Notification</string>
     <string name="exit_app">Exit App</string>
 </resources>

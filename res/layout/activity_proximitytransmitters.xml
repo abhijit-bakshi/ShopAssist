@@ -12,7 +12,7 @@
     takes any liability nor responsibility with respect to the sample code, and
     disclaims all warranties, express and implied, including without limitation
     warranties on merchantability, fitness for a specified purpose, and against
-    infringement.
+    infringement..
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -49,38 +49,18 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/thumbnail"
-        android:text="A List item title"
+        android:text="Offers!"
         android:textColor="#040404"
         android:textSize="15sp"
         android:textStyle="bold"
         android:typeface="sans" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/thumbnail"
-        android:layout_margin="10dip"
-        android:layout_marginTop="20dp"
-        android:progressDrawable="@drawable/progressbar2" />
-
     <TextView
         android:id="@+id/temperatureTextField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/progressBar"
         android:layout_alignTop="@+id/thumbnail"
         android:text="78F"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <ImageView
-        android:id="@+id/batteryImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/progressBar"
-        android:layout_alignLeft="@+id/temperatureTextField"
-        android:src="@drawable/battery_full" />
 
 </RelativeLayout>

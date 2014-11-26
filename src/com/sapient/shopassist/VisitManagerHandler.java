@@ -23,9 +23,10 @@ public class VisitManagerHandler implements VisitListener {
 	
     private static final String PROXIMITY_APP_ID = "e2ca14f4135a384947ed454147e38d0eb51c3c47f036f3311d33854ee00c605d";
     private static final String PROXIMITY_APP_SECRET = "4f8b636d87cade1ef245fdffa0fea8222a10666287af35aa69bb2f0039210a54";
-
+    private String userId = "testShopper";
     private Boolean sb1Notified = false;
     private Boolean sb2Notified = false;
+    
     
     private static final String TAG = "VisitManagerHandler";
 
@@ -61,40 +62,29 @@ public class VisitManagerHandler implements VisitListener {
     @SuppressLint("DefaultLocale")
 	@Override
     public void receivedSighting(Visit visit, Date updateTime, Integer rssi) {
+  
+        //Need to call recommender service to generate offer based on user profile and coupon service to generate unique coupon.
     	
-    	String msg = "I received a sighting! " + visit.getTransmitter().getName() + "and RSSI is:" + rssi;
+    	String beacon = visit.getTransmitter().getName();
+    	
+        if(beacon.equalsIgnoreCase("SB1")  && rssi > -70 && !sb1Notified) {
+        String msg = "Flat 50% off on all leather laptop bags at our store for the next 4 hours only. Use coupon code: " + visit.getTransmitter().getName() + rssi + " at checkout.";
         Log.d(TAG, msg);
-        
-        if(visit.getTransmitter().getName().equalsIgnoreCase("SB1")  && rssi > -70 && !sb1Notified) {
-        sendNotification(msg,10);
-        sendNotification(msg,11);
-        sendNotification(msg,12);
+        sendNotification(10,msg,beacon,userId);
         sb1Notified = true;
         }
-        if(visit.getTransmitter().getName().equalsIgnoreCase("SB2") && rssi > -70 && !sb2Notified){
-        sendNotification(msg,20);
-        sendNotification(msg,21);
-        sendNotification(msg,22);
+        if(beacon.equalsIgnoreCase("SB2") && rssi > -70 && !sb2Notified){
+        String msg = "Upto 50% off on all Lego toys at our store for the next 2 hours only. Use coupon code: " + visit.getTransmitter().getName() + rssi + " at checkout.";
+        Log.d(TAG, msg);
+        sendNotification(20,msg,beacon,userId);
         sb2Notified = true;
         }
-        
-       String name = visit.getTransmitter().getName();
-       TransmitterAttributes attributes = new TransmitterAttributes();
-       attributes.setBattery(visit.getTransmitter().getBattery());
-       attributes.setIdentifier(visit.getTransmitter().getIdentifier());
-       attributes.setName(visit.getTransmitter().getName());
-       attributes.setTemperature(visit.getTransmitter().getTemperature());
-       attributes.setRssi(rssi);
-       attributes.setDepart(false);
-       transmitters.put(name, attributes);
-      // this.activity.addDevice(transmitters);
     }
 
     @Override
     public void didArrive(Visit visit) {
     	String msg = "Arrived near " + visit.getTransmitter().getName();
         Log.d(TAG, msg);
-    	sendNotification(msg,1);
     }
 
     @Override
@@ -105,18 +95,18 @@ public class VisitManagerHandler implements VisitListener {
         TransmitterAttributes attributes = new TransmitterAttributes();
         attributes.setDepart(true);
         transmitters.put(name, attributes);
-        //this.activity.addDevice(transmitters);
-        sendNotification(msg,3);
     }
     
-    private void sendNotification(String msg, Integer notificationId){
+    private void sendNotification(Integer notificationId, String msg, String beacon,String userId){
     	    
         mNotificationManager = (NotificationManager)
         		context.getSystemService(Context.NOTIFICATION_SERVICE);
         
         Intent notificationIntent = new Intent(context,ProximityTransmittersActivity.class);
-        notificationIntent.putExtra("id",notificationId);        
+        notificationIntent.putExtra("notificationId",notificationId);        
         notificationIntent.putExtra("message",msg);
+        notificationIntent.putExtra("beacon",beacon);
+        notificationIntent.putExtra("userId",userId);
         notificationIntent.setAction(Intent.ACTION_SEND);
         
         PendingIntent contentIntent = PendingIntent.getActivity(context, notificationId,

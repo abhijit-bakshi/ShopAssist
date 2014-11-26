@@ -1,4 +1,3 @@
-
 package com.sapient.shopassist;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class TransmitterListAdapter extends BaseAdapter {
     private int position;
     private LinkedHashMap<String, TransmitterAttributes> mEntries = new LinkedHashMap<String, TransmitterAttributes>();
 
-    public TransmitterListAdapter(Context context, Activity activity, VisitManagerHandler manager) {
+    public TransmitterListAdapter(Context context, Activity activity) {
         mContext = context;
         this.activity = activity;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -67,8 +66,7 @@ public class TransmitterListAdapter extends BaseAdapter {
 
         TextView titleText = (TextView) itemView.findViewById(R.id.listTitle);
         TextView tempText = (TextView) itemView.findViewById(R.id.temperatureTextField);
-        ImageView batteryImg = (ImageView) itemView.findViewById(R.id.batteryImageView);
-
+       
         ArrayList<TransmitterAttributes> arrayofAllTransmitter = new ArrayList<TransmitterAttributes>(mEntries.values());
         if (position >= arrayofAllTransmitter.size()) {
             return itemView;
@@ -78,7 +76,6 @@ public class TransmitterListAdapter extends BaseAdapter {
         Log.d(TAG, "Position is " + position + "Transmitter name is " + transmitter.getName());
 
         if (transmitter.isDepart() == true) {
-            // if (!currentTransmitter.containsKey(transmitter.getName())) {
             Log.d(TAG, "Transmitter removed graying it out");
             float alphavalue = 0.3f;
             itemView.setAlpha(alphavalue);
@@ -88,42 +85,8 @@ public class TransmitterListAdapter extends BaseAdapter {
             itemView.setAlpha(1);
         }
 
-        titleText.setText(transmitter.getName());
-        if (transmitter.getTemperature() != null) {
-            tempText.setText(Integer.toString(transmitter.getTemperature()) + "\u2109");
-        }
-        else {
-            tempText.setText("0" + "\u2109");
-        }
-        int battery = 0;
-        if (transmitter.getBattery() != null) {
-            battery = transmitter.getBattery();
-        }
-        switch (battery) {
-            case 3:
-                batteryImg.setImageResource(R.drawable.battery_full);
-                break;
-            case 2:
-                batteryImg.setImageResource(R.drawable.battery_high);
-                break;
-            case 1:
-                batteryImg.setImageResource(R.drawable.battery_low);
-                break;
-
-            default:
-                batteryImg.setImageResource(R.drawable.battery_low);
-        }
-
-        titleText.setText(transmitter.getName());
-        final ProgressBar bar = (ProgressBar) itemView.findViewById(R.id.progressBar);
-        int progress = 0;
-        int maxProgress = bar.getMax();
-        int rssi = transmitter.getRssi();
-        Log.d("TransmitterListAdapter", "RSSI for " + transmitter.getName() + "is: " + rssi + " maxProgress is "
-                + maxProgress);
-        progress = progressValue(rssi);
-
-        bar.setProgress(progress);
+        titleText.setText(transmitter.getOfferTitle());
+       // tempText.setText(transmitter.getOfferText());
 
         return itemView;
     }

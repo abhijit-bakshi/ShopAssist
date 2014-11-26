@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 public class ProximityTransmittersActivity extends ListActivity {
 
-    //private VisitManagerHandler manager;
     private TransmitterListAdapter adapter;
+    private final LinkedHashMap<String, TransmitterAttributes> transmitters = new LinkedHashMap<String, TransmitterAttributes>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,26 +74,29 @@ public class ProximityTransmittersActivity extends ListActivity {
         
         Intent intent = getIntent();        
         Bundle bundle = intent.getExtras(); 
-        if(bundle != null)
-        	showToastMessage(bundle.getInt("id") + ": " + bundle.getString("message"));
-     
-   /*     if(manager == null){
-            manager = new VisitManagerHandler();
-            manager.init(this);
-            adapter = new TransmitterListAdapter(this, this, manager);
-            setListAdapter(adapter);
-            manager.startScanning();
-
+        
+        adapter = new TransmitterListAdapter(this, this);
+        setListAdapter(adapter);
+        
+        if(bundle != null){
+        	String name = Integer.toString(bundle.getInt("notificationId"));
+            TransmitterAttributes attributes = new TransmitterAttributes();
+            attributes.setIdentifier(bundle.getString("beacon"));
+            attributes.setName(bundle.getString("userId"));
+            attributes.setOfferTitle(bundle.getString("message"));
+            //attributes.setOfferText("Offer Text");
+            transmitters.put(name, attributes);
+            addDevice(transmitters);
         }
-     */
+
+         
         ImageButton imageButtonRefresh = (ImageButton) findViewById(R.id.imageButton_refresh);
 
         imageButtonRefresh.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				adapter.removeTransmitters();
-            	adapter.notifyDataSetChanged();
+				showToastMessage("Please wait...A sales representative would arrive soon!");
 			}
         
         });

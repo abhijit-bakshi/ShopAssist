@@ -21,9 +21,6 @@ import com.sapient.shopassist.R;
 
 public class ProximityActivity extends Activity implements ProximityListener {
 
-    //private static final String PROXIMITY_APP_ID = "e2ca14f4135a384947ed454147e38d0eb51c3c47f036f3311d33854ee00c605d";
-    //private static final String PROXIMITY_APP_SECRET = "4f8b636d87cade1ef245fdffa0fea8222a10666287af35aa69bb2f0039210a54";
-
     private static final String PROXIMITY_SERVICE_ENABLED_KEY = "proximity.service.enabled";
     private static final String TAG = ProximityActivity.class.getSimpleName();
     private View rootView;
@@ -47,8 +44,6 @@ public class ProximityActivity extends Activity implements ProximityListener {
         rootView.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
 
         VisitManagerHandler.initializeProximity(this, getApplication());
-        
-        //initializeProximity();
 
         String proximityServiceEnabled = getUserPreference(PROXIMITY_SERVICE_ENABLED_KEY);
         if (proximityServiceEnabled != null && Boolean.valueOf(proximityServiceEnabled)) {
@@ -89,16 +84,6 @@ public class ProximityActivity extends Activity implements ProximityListener {
         getMenuInflater().inflate(R.menu.main, menu);
         return false;
     }
-
-   /* private void initializeProximity() {
-        Log.d(TAG, "initializeProximity");
-
-        GimbalLogConfig.setLogLevel(GimbalLogLevel.INFO);
-        GimbalLogConfig.enableFileLogging(this.getApplicationContext());
-
-        Proximity.initialize(this, PROXIMITY_APP_ID, PROXIMITY_APP_SECRET);
-        Proximity.optimizeWithApplicationLifecycle(getApplication());
-    }*/
 
     private void startProximityService() {
         Log.d(ProximityActivity.class.getSimpleName(), "startSession");

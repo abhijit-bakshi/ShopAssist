@@ -7,11 +7,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 public class StoreNotificationService extends Service {
-	
-    //private static final String PROXIMITY_APP_ID = "e2ca14f4135a384947ed454147e38d0eb51c3c47f036f3311d33854ee00c605d";
-    //private static final String PROXIMITY_APP_SECRET = "4f8b636d87cade1ef245fdffa0fea8222a10666287af35aa69bb2f0039210a54";
 
-	
 	private VisitManagerHandler manager;
 	
 	public StoreNotificationService() {
