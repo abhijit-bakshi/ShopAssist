@@ -2,6 +2,9 @@ package com.sapient.shopassist;
 
 import java.util.LinkedHashMap;
 
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
+
 import com.sapient.shopassist.R;
 
 import android.app.ListActivity;
@@ -96,7 +99,26 @@ public class ProximityTransmittersActivity extends ListActivity {
 
 			@Override
 			public void onClick(View v) {
+				
+		        new HttpRequestHandler() {
+		            @Override
+		            public HttpUriRequest getHttpRequestMethod() {
+
+		            	//return new HttpGet("http://www.google.com");
+		                return new HttpGet("http://shopassist-shopassist.rhcloud.com/api/v1/ping");
+
+		                 //return new HttpPost(url)
+		            }
+		            @Override
+		            public void onResponse(String result) {
+		                Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+		                //etResponse.setText(result);
+		            }
+
+		        }.execute();
+		        
 				showToastMessage("Please wait...A sales representative would arrive soon!");
+				
 			}
         
         });
