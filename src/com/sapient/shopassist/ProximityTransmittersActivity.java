@@ -1,9 +1,13 @@
 package com.sapient.shopassist;
 
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashMap;
 
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.sapient.shopassist.R;
 
@@ -14,12 +18,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class ProximityTransmittersActivity extends ListActivity {
+public class ProximityTransmittersActivity extends ListActivity implements OnClickListener {
 
     private TransmitterListAdapter adapter;
+    
+    JSONObject jo = new JSONObject();
+    
+    private String beacon;
+    private String userId;
+    private String username;
+    private String offer;
+    
     private final LinkedHashMap<String, TransmitterAttributes> transmitters = new LinkedHashMap<String, TransmitterAttributes>();
 
     @Override
@@ -39,6 +52,7 @@ public class ProximityTransmittersActivity extends ListActivity {
             }
         });
     }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.proximitytransmitters, menu);
@@ -55,7 +69,6 @@ public class ProximityTransmittersActivity extends ListActivity {
         }
     }
     
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -81,50 +94,77 @@ public class ProximityTransmittersActivity extends ListActivity {
         adapter = new TransmitterListAdapter(this, this);
         setListAdapter(adapter);
         
+        username = "Abhijit Bakshi";
+        
         if(bundle != null){
+        	
+            beacon = bundle.getString("beacon");
+            userId = bundle.getString("userId");
+            username = "Abhijit Bakshi";//bundle.getString("username");
+            offer = bundle.getString("message");
+            
         	String name = Integer.toString(bundle.getInt("notificationId"));
             TransmitterAttributes attributes = new TransmitterAttributes();
-            attributes.setIdentifier(bundle.getString("beacon"));
-            attributes.setName(bundle.getString("userId"));
-            attributes.setOfferTitle(bundle.getString("message"));
+            attributes.setIdentifier(beacon);
+            attributes.setName(userId);
+            attributes.setOfferTitle(offer);
             //attributes.setOfferText("Offer Text");
             transmitters.put(name, attributes);
             addDevice(transmitters);
+
         }
 
          
         ImageButton imageButtonRefresh = (ImageButton) findViewById(R.id.imageButton_refresh);
 
-        imageButtonRefresh.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				
-		        new HttpRequestHandler() {
-		            @Override
-		            public HttpUriRequest getHttpRequestMethod() {
-
-		            	//return new HttpGet("http://www.google.com");
-		                return new HttpGet("http://shopassist-shopassist.rhcloud.com/api/v1/ping");
-
-		                 //return new HttpPost(url)
-		            }
-		            @Override
-		            public void onResponse(String result) {
-		                Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
-		                //etResponse.setText(result);
-		            }
-
-		        }.execute();
-		        
-				showToastMessage("Please wait...A sales representative would arrive soon!");
-				
-			}
-        
-        });
+        imageButtonRefresh.setOnClickListener(this);
 
     }
+    
+	@Override
+	public void onClick(View v) {
+			
+    	
+    	try {
+			jo.put("userId", userId);
+        	jo.put("userName", username);
+        	jo.put("beaconName", beacon);
+        	jo.put("offer", offer);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	        new HttpRequestHandler() {
+	            @Override
+	            public HttpUriRequest getHttpRequestMethod() {
 
+	                //return new HttpGet("http://shopassist-shopassist.rhcloud.com/api/v1/ping");
+	            	HttpPost httpPost = new HttpPost("https://shopassist-shopassist.rhcloud.com/api/v1/beacons");
+            	
+	            	try {
+						httpPost.setEntity(new StringEntity(jo.toString(), "UTF8"));
+						 Log.i("JSONObject", jo.toString());
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	            	
+	            	//httpPost.setEntity(new ByteArrayEntity(jo.toString().getBytes("UTF8")));
+	                httpPost.setHeader("Content-type", "application/json");
+        	
+	                return httpPost;
+	            }
+	            @Override
+	            public void onResponse(String result) {
+	                Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+	            }
+
+	        }.execute();
+	        
+			showToastMessage("Please wait...A sales representative would arrive soon!");
+			
+		}
     
     protected synchronized void addDevice(final LinkedHashMap<String, TransmitterAttributes> entries) {
         runOnUiThread(new Runnable() {
