@@ -26,7 +26,7 @@ public class ProximityTransmittersActivity extends ListActivity implements OnCli
 
     private TransmitterListAdapter adapter;
     
-    JSONObject jo = new JSONObject();
+    JSONObject jsonObject = new JSONObject();
     
     private String beacon;
     private String userId;
@@ -94,13 +94,13 @@ public class ProximityTransmittersActivity extends ListActivity implements OnCli
         adapter = new TransmitterListAdapter(this, this);
         setListAdapter(adapter);
         
-        username = "Abhijit Bakshi";
+        //username = "Abhijit Bakshi";
         
         if(bundle != null){
         	
             beacon = bundle.getString("beacon");
             userId = bundle.getString("userId");
-            username = "Abhijit Bakshi";//bundle.getString("username");
+            username = bundle.getString("username");
             offer = bundle.getString("message");
             
         	String name = Integer.toString(bundle.getInt("notificationId"));
@@ -108,9 +108,8 @@ public class ProximityTransmittersActivity extends ListActivity implements OnCli
             attributes.setIdentifier(beacon);
             attributes.setName(userId);
             attributes.setOfferTitle(offer);
-            //attributes.setOfferText("Offer Text");
             transmitters.put(name, attributes);
-            addDevice(transmitters);
+            addPromotion(transmitters);
 
         }
 
@@ -126,10 +125,10 @@ public class ProximityTransmittersActivity extends ListActivity implements OnCli
 			
     	
     	try {
-			jo.put("userId", userId);
-        	jo.put("userName", username);
-        	jo.put("beaconName", beacon);
-        	jo.put("offer", offer);
+			jsonObject.put("userId", userId);
+        	jsonObject.put("userName", username);
+        	jsonObject.put("beaconName", beacon);
+        	jsonObject.put("offer", offer);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -139,12 +138,11 @@ public class ProximityTransmittersActivity extends ListActivity implements OnCli
 	            @Override
 	            public HttpUriRequest getHttpRequestMethod() {
 
-	                //return new HttpGet("http://shopassist-shopassist.rhcloud.com/api/v1/ping");
 	            	HttpPost httpPost = new HttpPost("https://shopassist-shopassist.rhcloud.com/api/v1/beacons");
             	
 	            	try {
-						httpPost.setEntity(new StringEntity(jo.toString(), "UTF8"));
-						 Log.i("JSONObject", jo.toString());
+						httpPost.setEntity(new StringEntity(jsonObject.toString(), "UTF8"));
+						 Log.i("JSONObject", jsonObject.toString());
 					} catch (UnsupportedEncodingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -157,16 +155,17 @@ public class ProximityTransmittersActivity extends ListActivity implements OnCli
 	            }
 	            @Override
 	            public void onResponse(String result) {
-	                Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+	                //Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+	            	showToastMessage("Please wait...A sales representative would arrive soon!");
 	            }
 
 	        }.execute();
 	        
-			showToastMessage("Please wait...A sales representative would arrive soon!");
+			showToastMessage("Sending Request...!");
 			
 		}
     
-    protected synchronized void addDevice(final LinkedHashMap<String, TransmitterAttributes> entries) {
+    protected synchronized void addPromotion(final LinkedHashMap<String, TransmitterAttributes> entries) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
