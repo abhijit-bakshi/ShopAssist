@@ -26,6 +26,7 @@ public class VisitManagerHandler implements VisitListener {
     private static final String PROXIMITY_APP_ID = "e2ca14f4135a384947ed454147e38d0eb51c3c47f036f3311d33854ee00c605d";
     private static final String PROXIMITY_APP_SECRET = "4f8b636d87cade1ef245fdffa0fea8222a10666287af35aa69bb2f0039210a54";
     private String userId = "testShopper";
+    private String userName = "Manish Garodia";
     private Boolean sb1Notified = false;
     private Boolean sb2Notified = false;
     
@@ -69,17 +70,17 @@ public class VisitManagerHandler implements VisitListener {
     	
     	String beacon = visit.getTransmitter().getName();
     	
-        if(beacon.equalsIgnoreCase("SB1")  && rssi > -50 && !sb1Notified) {
+        if(beacon.equalsIgnoreCase("SB1")  && rssi > -60 && !sb1Notified) {
         String msg = "Upto 50% off on diamond rings at our store for next 2 hours only. Use coupon code: " + visit.getTransmitter().getName() + rssi + " at checkout.";
         Log.d(TAG, msg);
         //Integer notificationId, String title, String msg, Integer pictureId, String beacon,String userId
-        sendNotification(10,msg,msg,R.drawable.caratlane_enigma_whorl_gold,beacon,userId);
+        sendNotification(10, msg, msg, R.drawable.caratlane_enigma_whorl_gold,beacon, userId, userName);
         sb1Notified = true;
         }
-        if(beacon.equalsIgnoreCase("SB2") && rssi > -50 && !sb2Notified){
+        if(beacon.equalsIgnoreCase("SB2") && rssi > -60 && !sb2Notified){
         String msg = "Upto 50% off on men jackets at our store for the next 4 hours only. Use coupon code: " + visit.getTransmitter().getName() + rssi + " at checkout.";
         Log.d(TAG, msg);
-        sendNotification(20,msg,msg,R.drawable.nautica_m,beacon,userId);
+        sendNotification(20, msg, msg, R.drawable.nautica_m,beacon, userId, userName);
         sb2Notified = true;
         }
     }
@@ -100,7 +101,7 @@ public class VisitManagerHandler implements VisitListener {
         transmitters.put(name, attributes);
     }
     
-    private void sendNotification(Integer notificationId, String title, String msg, Integer pictureId, String beacon,String userId){
+    private void sendNotification(Integer notificationId, String title, String msg, Integer pictureId, String beacon,String userId, String username){
 	    
         mNotificationManager = (NotificationManager)
         		context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -112,6 +113,7 @@ public class VisitManagerHandler implements VisitListener {
         notificationIntent.putExtra("pictureId",pictureId);
         notificationIntent.putExtra("beacon",beacon);
         notificationIntent.putExtra("userId",userId);
+        notificationIntent.putExtra("username",username);
         notificationIntent.setAction(Intent.ACTION_SEND);
         
         PendingIntent contentIntent = PendingIntent.getActivity(context, notificationId,
@@ -130,7 +132,10 @@ public class VisitManagerHandler implements VisitListener {
 	     .setSummaryText(msg));
 	       
 	      mBuilder.setContentIntent(contentIntent);
-	      mNotificationManager.notify(notificationId, mBuilder.build());
+	      Notification notif  = mBuilder.build();
+	      notif.defaults |= Notification.DEFAULT_SOUND;
+	      notif.defaults |= Notification.DEFAULT_VIBRATE;
+	      mNotificationManager.notify(notificationId, notif);
     }
     
     /*private void sendNotification(Integer notificationId, String msg, String beacon,String userId){
