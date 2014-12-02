@@ -61,6 +61,9 @@
             android:layout_marginBottom="10dp"
             android:layout_marginRight="14dp"
             android:src="@android:drawable/ic_menu_rotate" />
+       
+
+       
     </RelativeLayout>
 
     <ListView
@@ -79,14 +82,6 @@
         android:layout_height="64dp"
         android:layout_gravity="center" />
     
-    <!--
-             <TextView
-          android:id="@android:id/empty"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:background="@drawable/proximitybackground2x"
-          android:layout_gravity="center"
-          android:text="@string/appRegistered" />
-    -->
+
 
 </LinearLayout>

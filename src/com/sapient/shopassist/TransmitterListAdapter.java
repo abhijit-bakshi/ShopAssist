@@ -67,6 +67,9 @@ public class TransmitterListAdapter extends BaseAdapter {
         TextView titleText = (TextView) itemView.findViewById(R.id.listTitle);
         TextView tempText = (TextView) itemView.findViewById(R.id.temperatureTextField);
        
+        ImageView qImageView = (ImageView) itemView.findViewById(R.id.icon);
+        
+        
         ArrayList<TransmitterAttributes> arrayofAllTransmitter = new ArrayList<TransmitterAttributes>(mEntries.values());
         if (position >= arrayofAllTransmitter.size()) {
             return itemView;
@@ -86,6 +89,7 @@ public class TransmitterListAdapter extends BaseAdapter {
         }
 
         titleText.setText(transmitter.getOfferTitle());
+        qImageView.setImageResource(transmitter.getPictureId());
        // tempText.setText(transmitter.getOfferText());
 
         return itemView;

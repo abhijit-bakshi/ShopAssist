@@ -36,8 +36,8 @@
 
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="40dip"
-            android:layout_height="40dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
             android:src="@drawable/avatar_01_2x" />
     </LinearLayout>
 
@@ -48,10 +48,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_below="@+id/thumbnail"
         android:text="Offers!"
         android:textColor="#040404"
-        android:textSize="15sp"
+        android:textSize="25sp"
         android:textStyle="bold"
         android:typeface="sans" />
 
@@ -60,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
-        android:text="78F"
+        android:text=""
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

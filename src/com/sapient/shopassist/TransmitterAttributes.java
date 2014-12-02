@@ -11,6 +11,7 @@ public class TransmitterAttributes {
     private String iconUrl;
     private Integer battery;
     private Integer temperature;
+    private Integer pictureId;
     private int rssi;
     private boolean depart;
 
@@ -78,6 +79,14 @@ public class TransmitterAttributes {
         this.temperature = temperature;
     }
 
+    public Integer getPictureId() {
+        return pictureId;
+    }
+
+    public void setPictureId(Integer pictureId) {
+        this.pictureId = pictureId;
+    }
+    
     public int getRssi() {
         return rssi;
     }

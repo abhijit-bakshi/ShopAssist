@@ -10,6 +10,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.gimbal.proximity.Proximity;
@@ -68,15 +70,16 @@ public class VisitManagerHandler implements VisitListener {
     	String beacon = visit.getTransmitter().getName();
     	
         if(beacon.equalsIgnoreCase("SB1")  && rssi > -70 && !sb1Notified) {
-        String msg = "Flat 50% off on all leather laptop bags at our store for the next 4 hours only. Use coupon code: " + visit.getTransmitter().getName() + rssi + " at checkout.";
+        String msg = "Upto 50% off on diamond rings at our store for next 2 hours only. Use coupon code: " + visit.getTransmitter().getName() + rssi + " at checkout.";
         Log.d(TAG, msg);
-        sendNotification(10,msg,beacon,userId);
+        //Integer notificationId, String title, String msg, Integer pictureId, String beacon,String userId
+        sendNotification(10,msg,msg,R.drawable.caratlane_enigma_whorl_gold,beacon,userId);
         sb1Notified = true;
         }
         if(beacon.equalsIgnoreCase("SB2") && rssi > -70 && !sb2Notified){
-        String msg = "Upto 50% off on all Lego toys at our store for the next 2 hours only. Use coupon code: " + visit.getTransmitter().getName() + rssi + " at checkout.";
+        String msg = "Upto 50% off on men jackets at our store for the next 4 hours only. Use coupon code: " + visit.getTransmitter().getName() + rssi + " at checkout.";
         Log.d(TAG, msg);
-        sendNotification(20,msg,beacon,userId);
+        sendNotification(20,msg,msg,R.drawable.nautica_m,beacon,userId);
         sb2Notified = true;
         }
     }
@@ -97,7 +100,40 @@ public class VisitManagerHandler implements VisitListener {
         transmitters.put(name, attributes);
     }
     
-    private void sendNotification(Integer notificationId, String msg, String beacon,String userId){
+    private void sendNotification(Integer notificationId, String title, String msg, Integer pictureId, String beacon,String userId){
+	    
+        mNotificationManager = (NotificationManager)
+        		context.getSystemService(Context.NOTIFICATION_SERVICE);
+        
+        Intent notificationIntent = new Intent(context,ProximityTransmittersActivity.class);
+        notificationIntent.putExtra("notificationId",notificationId);
+        notificationIntent.putExtra("title",title);
+        notificationIntent.putExtra("message",msg);
+        notificationIntent.putExtra("pictureId",pictureId);
+        notificationIntent.putExtra("beacon",beacon);
+        notificationIntent.putExtra("userId",userId);
+        notificationIntent.setAction(Intent.ACTION_SEND);
+        
+        PendingIntent contentIntent = PendingIntent.getActivity(context, notificationId,
+        		notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        
+        Bitmap bigPicture= BitmapFactory.decodeResource(context.getResources(),
+        		pictureId);
+
+	     Notification.Builder mBuilder =
+	                new Notification.Builder(context)
+	     .setContentTitle(title)
+	     //.setAutoCancel(true)
+	     .setSmallIcon(R.drawable.nav_icon_binoculars)
+	     .setStyle(new Notification.BigPictureStyle()
+	     .bigPicture(bigPicture)
+	     .setSummaryText(msg));
+	       
+	      mBuilder.setContentIntent(contentIntent);
+	      mNotificationManager.notify(notificationId, mBuilder.build());
+    }
+    
+    /*private void sendNotification(Integer notificationId, String msg, String beacon,String userId){
     	    
         mNotificationManager = (NotificationManager)
         		context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -122,7 +158,7 @@ public class VisitManagerHandler implements VisitListener {
 
         mBuilder.setContentIntent(contentIntent);
         mNotificationManager.notify(notificationId, mBuilder.build());
-    }
+    }*/
     
     public static void initializeProximity(Context context, Application app) {
         Log.d(TAG, "initializeProximity");

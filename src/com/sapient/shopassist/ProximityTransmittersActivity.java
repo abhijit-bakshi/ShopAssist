@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class ProximityTransmittersActivity extends ListActivity implements OnClickListener {
@@ -31,7 +32,9 @@ public class ProximityTransmittersActivity extends ListActivity implements OnCli
     private String beacon;
     private String userId;
     private String username;
+    private String offerTitle;
     private String offer;
+    private Integer pictureId;
     
     private final LinkedHashMap<String, TransmitterAttributes> transmitters = new LinkedHashMap<String, TransmitterAttributes>();
 
@@ -101,15 +104,21 @@ public class ProximityTransmittersActivity extends ListActivity implements OnCli
             beacon = bundle.getString("beacon");
             userId = bundle.getString("userId");
             username = bundle.getString("username");
+            offerTitle = bundle.getString("title");
             offer = bundle.getString("message");
+            pictureId = bundle.getInt("pictureId");
             
         	String name = Integer.toString(bundle.getInt("notificationId"));
             TransmitterAttributes attributes = new TransmitterAttributes();
             attributes.setIdentifier(beacon);
             attributes.setName(userId);
             attributes.setOfferTitle(offer);
+            attributes.setPictureId(pictureId);
             transmitters.put(name, attributes);
             addPromotion(transmitters);
+            
+           // ImageView qImageView = (ImageView) findViewById(R.id.promopicture);
+           // qImageView.setImageResource(pictureId);
 
         }
 
