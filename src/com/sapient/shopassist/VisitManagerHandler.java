@@ -69,14 +69,14 @@ public class VisitManagerHandler implements VisitListener {
     	
     	String beacon = visit.getTransmitter().getName();
     	
-        if(beacon.equalsIgnoreCase("SB1")  && rssi > -70 && !sb1Notified) {
+        if(beacon.equalsIgnoreCase("SB1")  && rssi > -50 && !sb1Notified) {
         String msg = "Upto 50% off on diamond rings at our store for next 2 hours only. Use coupon code: " + visit.getTransmitter().getName() + rssi + " at checkout.";
         Log.d(TAG, msg);
         //Integer notificationId, String title, String msg, Integer pictureId, String beacon,String userId
         sendNotification(10,msg,msg,R.drawable.caratlane_enigma_whorl_gold,beacon,userId);
         sb1Notified = true;
         }
-        if(beacon.equalsIgnoreCase("SB2") && rssi > -70 && !sb2Notified){
+        if(beacon.equalsIgnoreCase("SB2") && rssi > -50 && !sb2Notified){
         String msg = "Upto 50% off on men jackets at our store for the next 4 hours only. Use coupon code: " + visit.getTransmitter().getName() + rssi + " at checkout.";
         Log.d(TAG, msg);
         sendNotification(20,msg,msg,R.drawable.nautica_m,beacon,userId);

@@ -60,7 +60,7 @@
             android:layout_centerVertical="true"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="14dp"
-            android:src="@android:drawable/ic_menu_rotate" />
+            android:src="@drawable/help" />
        
 
        
